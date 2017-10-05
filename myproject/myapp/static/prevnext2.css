@@ -1,0 +1,15 @@
+.csspagsination:not(.js) .pagses > .pagse:target ~ .pagse:last-child,
+.csspagsination:not(.js) .pagses > .pagse {display: none;}
+.csspagsination:not(.js) .pagses > :last-child,
+.csspagsination:not(.js) .pagses > .pagse:target {display: block;}
+.csspagsination .prev, .next {display: none;}
+.csspagsination.js .pagse:not(.pagsinationActive) {display: none;}
+.csspagsination.js .pagse.pagsinationActive {display: block;}
+.csspagsination.js .pagseNav .pagseNumber.pagsinationActive {font-weight: bold;}
+@media screen and (max-width: 480px) {
+    .csspagsination .prev, .next {display: block;width: 45%;}
+    .csspagsination .prev {float: left;text-align: right;}
+    .csspagsination .next {float: right;text-align: left;}
+    .csspagsination:not(.js) .pagseNav {display: none;}
+    .csspagsination.js .pagseNav .pagseNumber {display: none;}
+}
