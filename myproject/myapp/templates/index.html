@@ -28,7 +28,9 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <img href="#myCarousel" src="/media/logomini.png" width="200" height="75" alt="C1">
+                    <a href="#myPage" title="To Top">
+                        <img src="/media/logomini.png" width="200" height="75" alt="C1">
+                    </a>
                 </div>
                 <div class="collapse navbar-collapse" id="myNavbar">
                     <ul class="nav navbar-nav navbar-right">
@@ -116,9 +118,13 @@
                                                 <td><div class="col-sm-3">
                                                     {% with magem.imagem.all|first as image %}
                                                         {%if image.imagem.public_id%}
-                                                            {% cloudinary image.imagem THUMBNAIL %}
+                                                            <a data-toggle="modal" data-target="#myModal{{magem.id}}">
+                                                                {% cloudinary image.imagem THUMBNAIL %}
+                                                            </a>
                                                         {%else%}
-                                                            <img src="/media/300x300.png" style="border-radius:50%;">
+                                                            <a data-toggle="modal" data-target="#myModal{{magem.id}}">
+                                                                <img src="/media/300x300.png" style="border-radius:50%;">
+                                                            </a>
                                                         {%endif%}
                                                     {% endwith %}
                                                 </div></td>
@@ -169,7 +175,7 @@
                                                                                         {%if magem.imagem.public_id%}
                                                                                             {% cloudinary magem.imagem MINISLIDE %}
                                                                                             <div class="carousel-caption">
-                                                                                                <h3>{{ modal.titulo }}</h3>
+                                                                                                <h3>{{ magem.titulo }}</h3>
                                                                                             </div>
                                                                                         {%else%}
                                                                                             <img src="/media/565x565.png">
@@ -199,9 +205,6 @@
                                                                                 <img src="/media/565x565.png">
                                                                             {%endif%}
                                                                         {% endwith %}
-                                                                        <div class="carousel-caption">
-                                                                            <h3>{{ modal.titulo }}</h3>
-                                                                        </div>
                                                                     {%endif%}
                                                                     <h4 class="modal-title">{{modal.titulo}}</h4>
                                                                 </div>
@@ -239,9 +242,13 @@
                                         <td><div class="col-sm-3">
                                             {% with magem.imagem.all|first as image %}
                                                 {%if image.imagem.public_id%}
-                                                    {% cloudinary image.imagem THUMBNAIL %}
+                                                    <a data-toggle="modal" data-target="#myModal{{magem.id}}">
+                                                        {% cloudinary image.imagem THUMBNAIL %}
+                                                    </a>
                                                 {%else%}
-                                                    <img src="/media/300x300.png" style="border-radius:50%;">
+                                                    <a data-toggle="modal" data-target="#myModal{{magem.id}}">
+                                                        <img src="/media/300x300.png" style="border-radius:50%;">
+                                                    </a>
                                                 {%endif%}
                                             {% endwith %}
                                         </div></td>
@@ -292,7 +299,7 @@
                                                                                 {%if magem.imagem.public_id%}
                                                                                     {% cloudinary magem.imagem MINISLIDE %}
                                                                                     <div class="carousel-caption">
-                                                                                        <h3>{{ modal.titulo }}</h3>
+                                                                                        <h3>{{ magem.titulo }}</h3>
                                                                                     </div>
                                                                                 {%else%}
                                                                                     <img src="/media/565x565.png">
@@ -322,9 +329,6 @@
                                                                         <img src="/media/565x565.png">
                                                                     {%endif%}
                                                                 {% endwith %}
-                                                                <div class="carousel-caption">
-                                                                    <h3>{{ modal.titulo }}</h3>
-                                                                </div>
                                                             {%endif%}
                                                             <h4 class="modal-title">{{modal.titulo}}</h4>
                                                         </div>
@@ -372,9 +376,13 @@
                                         {%for image in n_depoimento%}
                                             <td><div class="col-sm-3">
                                                 {%if image.imagem.public_id%}
-                                                    {% cloudinary image.imagem THUMBNAIL %}
+                                                    <a data-toggle="modal" data-target="#myModal{{image.id}}a{{forloop.counter}}">
+                                                        {% cloudinary image.imagem THUMBNAIL %}
+                                                    </a>
                                                 {%else%}
-                                                    <img src="/media/300x300.png" style="border-radius:50%;">
+                                                    <a data-toggle="modal" data-target="#myModal{{image.id}}a{{forloop.counter}}">
+                                                        <img src="/media/300x300.png" style="border-radius:50%;">
+                                                    </a>
                                                 {%endif%}
                                             </div></td>
                                         {%endfor%}
@@ -439,9 +447,13 @@
                                 {%for image in new_depoimento.0%}
                                     <td><div class="col-sm-3">
                                         {%if image.imagem.public_id%}
-                                            {% cloudinary image.imagem THUMBNAIL %}
+                                            <a data-toggle="modal" data-target="#myModal{{image.id}}a{{forloop.counter}}">
+                                                {% cloudinary image.imagem THUMBNAIL %}
+                                            </a>
                                         {%else%}
-                                            <img src="/media/300x300.png" style="border-radius:50%;">
+                                            <a data-toggle="modal" data-target="#myModal{{image.id}}a{{forloop.counter}}">
+                                                <img src="/media/300x300.png" style="border-radius:50%;">
+                                            </a>
                                         {%endif%}
                                     </div></td>
                                 {%endfor%}

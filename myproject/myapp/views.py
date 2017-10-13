@@ -8,8 +8,8 @@ from myproject.myapp.models import Imovel, Destaque, Depoimento
 
 def list(request):
     imoveis = Imovel.objects.all().order_by('published_date')
-    destaques = Destaque.objects.all()
-    depoimento = Depoimento.objects.all()
+    destaques = Destaque.objects.all().order_by('published_date')
+    depoimento = Depoimento.objects.all().order_by('published_date')
     pagin4 = range(4,(int(depoimento.count()/4)*4)+1,4)
     pagination4 = range(4,(int(imoveis.count()/4)*4)+1,4)
     pagination8 = range(8,(int(imoveis.count()/8)*8)+1,8)
