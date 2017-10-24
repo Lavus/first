@@ -10,6 +10,9 @@ def consts(request):
             ]
         ),
         THUMBNAIL = {
+            "format": "jpg", "crop": "fill", "height": 300, "width": 300,
+        },
+        DEPOTHUMBNAIL = {
             "format": "jpg", "crop": "fill", "radius":"max", "height": 300, "width": 300,
         },
         SLIDE = {

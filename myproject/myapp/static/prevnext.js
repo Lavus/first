@@ -1,3 +1,4 @@
+var jQuery = $.noConflict(true);
 var addInjQuery = true;
 var checkReady = function (callback) {
     if (window.$) {
@@ -35,7 +36,11 @@ checkReady(function ($) {
             var prevHTML = $(".cssPagination .prev").html();
             var nextHTML = $(".cssPagination .next").html();
             $(".cssPagination .prev, .cssPagination .next").remove();
-            $(".cssPagination .pageNav").prepend("<a href='" + $(".cssPagination .pageNumber.paginationActive").prev().attr("href") + "' class='prev'>" + prevHTML + "</a>");
+            if ($(".cssPagination .pageNumber.paginationActive").prev().attr("href")) {
+                $(".cssPagination .pageNav").prepend("<a href='" + $(".cssPagination .pageNumber.paginationActive").prev().attr("href") + "' class='prev'>" + prevHTML + "</a>");
+            }else{
+                $(".cssPagination .pageNav").prepend("<a href='#page1' class='prev'>" + prevHTML + "</a>");
+            }
             $(".cssPagination .prev").show().click(function (e) {
                 //e.preventDefault();
                 if ($(".cssPagination .page:visible").prev(".page").length > 0) {

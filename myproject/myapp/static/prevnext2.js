@@ -35,7 +35,11 @@ checkReady(function ($) {
             var prevHTML = $(".csspagsination .prev").html();
             var nextHTML = $(".csspagsination .next").html();
             $(".csspagsination .prev, .csspagsination .next").remove();
-            $(".csspagsination .pagseNav").prepend("<a href='" + $(".csspagsination .pagseNumber.pagsinationActive").prev().attr("href") + "' class='prev'>" + prevHTML + "</a>");
+            if ($(".csspagsination .pagseNumber.pagsinationActive").prev().attr("href")) {
+                $(".csspagsination .pagseNav").prepend("<a href='" + $(".csspagsination .pagseNumber.pagsinationActive").prev().attr("href") + "' class='prev'>" + prevHTML + "</a>");
+            }else{
+                $(".csspagsination .pagseNav").prepend("<a href='#pagse1' class='prev'>" + prevHTML + "</a>");
+            }
             $(".csspagsination .prev").show().click(function (e) {
                 //e.preventDefault();
                 if ($(".csspagsination .pagse:visible").prev(".pagse").length > 0) {

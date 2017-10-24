@@ -1,0 +1,141 @@
+* {
+  box-sizing: border-box;
+}
+
+#myInput, #myInput2, #myInput3 {
+  background-image: url('/css/searchicon.png');
+  background-position: 10px 12px;
+  background-repeat: no-repeat;
+  width: 100%;
+  font-size: 16px;
+  padding: 0px 25px 0px 25px;
+  border: 1px solid #ddd;
+  margin-bottom: 12px;
+}
+
+#myUL {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+#myUL li a {
+  border: 1px solid #ddd;
+  margin-top: -1px; /* Prevent double borders */
+  background-color: #f6f6f6;
+  padding: 12px;
+  text-decoration: none;
+  font-size: 18px;
+  color: black;
+  display: block
+}
+
+#myUL li a:hover:not(.header) {
+  background-color: #eee;
+}
+
+.csspagesination:not(.js) .pageses > .pagese:target ~ .pagese:last-child,
+.csspagesination:not(.js) .pageses > .pagese {display: none;}
+.csspagesination:not(.js) .pageses > :last-child,
+.csspagesination:not(.js) .pageses > .pagese:target {display: block;}
+.csspagesination .prev, .next {display: none;}
+.csspagesination.js .pagese:not(.pagesinationActive) {display: none;}
+.csspagesination.js .pagese.pagesinationActive {display: block;}
+.csspagesination.js .pageseNav .pageseNumber.pagesinationActive {font-weight: bold;}
+@media screen and (max-width: 480px) {
+    .csspagesination .prev, .next {display: block;width: 45%;}
+    .csspagesination .prev {float: left;text-align: right;}
+    .csspagesination .next {float: right;text-align: left;}
+    .csspagesination:not(.js) .pageseNav {display: none;}
+    .csspagesination.js .pageseNav .pageseNumber {display: none;}
+}
+
+
+
+
+
+
+
+
+
+
+body{
+    -webkit-align-items: center;
+    align-items: center;
+    text-align: center;
+}
+
+.imovelmain {
+    display: -webkit-flex;
+    -webkit-align-items: center;
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.imovelsection {
+    width: 100%;
+    height: 575px;
+    margin-right: 20px;
+}
+.imagemsection {
+    width: 100%;
+    height: 300px;
+}
+.titulosection {
+    width: 100%;
+    height: 70px;
+}
+.descricaosection {
+    width: 100%;
+    height: 100px;
+}
+.modalsection {
+    width: 100%;
+    height: 85px;
+}
+
+
+.depomain {
+    display: -webkit-flex;
+    -webkit-align-items: center;
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.deposection {
+    width: 100%;
+    height: 575px;
+    margin-right: 20px;
+}
+.depoimagemsection {
+    width: 100%;
+    height: 300px;
+}
+.depotitulosection {
+    width: 100%;
+    height: 70px;
+}
+.depodescricaosection {
+    width: 100%;
+    height: 100px;
+}
+.depomodalsection {
+    width: 100%;
+    height: 85px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

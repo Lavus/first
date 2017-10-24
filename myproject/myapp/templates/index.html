@@ -11,12 +11,13 @@
         <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
         <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-        <script>var jQuery = $.noConflict(true);</script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script src="{% static 'pagina.js' %}"></script>
         <link href="{% static 'pagina.css' %}" rel="stylesheet" type="text/css">
         <link href="{% static 'prevnext.css' %}" rel="stylesheet" type="text/css">
         <link href="{% static 'prevnext2.css' %}" rel="stylesheet" type="text/css">
+        <script src="{% static 'prevnext3.js' %}"></script>
+        <link href="{% static 'prevnext3.css' %}" rel="stylesheet" type="text/css">
     </head>
     <body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="60">
         <nav class="navbar navbar-default navbar-fixed-top">
@@ -34,15 +35,8 @@
                 </div>
                 <div class="collapse navbar-collapse" id="myNavbar">
                     <ul class="nav navbar-nav navbar-right">
-                        <li class="dropdown">
-                            <a href="#pricing" class="dropbtn">IMÓVEIS</a>
-                            <div class="dropdown-content">
-                                <a href="#comprar">COMPRAR</a>
-                                <a href="#contact">AVALIAÇÃO</a>
-                            </div>
-                        </li>
-                        <li><a href="#portfolio">CLIENTES</a></li>
                         <li><a href="#contact">CONTATO</a></li>
+                        <li><a><input type="text" id="myInput3" onkeyup="myFunction3()" placeholder="Procure o nome do imovel" title="Type in a name"></a></li>
                     </ul>
                 </div>
             </div>
@@ -75,7 +69,7 @@
                                     <h3>{{ destaque.titulo }}</h3>
                                 </div>
                             {%else%}
-                                <img src="/media/1920x1200.png" style="border-radius:50%;">
+                                <img src="/media/1920x1200.png" >
                                 <div class="carousel-caption">
                                     <h3>Sem imagem</h3>
                                 </div>
@@ -101,72 +95,64 @@
             </a>
         </div>
         <div class="container-fluid bg-3 text-center">
-            {%if new_imoveis|count > 0%}
-                <h1>Imoveis</h1>
-            {%else%}
-                <h1>Sem Imoveis</h1>
-            {%endif%}
+            <p id="demo"></p>
             <div class="cssPagination">
-                <div class="pages">
+                {%if new_imoveis|count > 0%}
+                    <h1>Todos os imoveis</h1>
+                {%else%}
+                    <h1>Sem Imoveis</h1>
+                {%endif%}
+                <br></br>
+                <div class="pages" id="new">
                     {%for n_imovel in new_imoveis%}
                         {%if forloop.counter != 1%}
                             <div class="page" id="page{{forloop.counter}}">
                                 {%for n_imoveis in n_imovel%}
-                                    <tr><div class="row">
-                                        <tr><div class="row">
-                                            {%for magem in n_imoveis%}
-                                                <td><div class="col-sm-3">
-                                                    {% with magem.imagem.all|first as image %}
+                                    <section class='imovelmain'>
+                                        {%for imovalues in n_imoveis%}
+                                            <section class='imovelsection'>
+                                                <section class='imagemsection'>
+                                                    {% with imovalues.imagem.all|first as image %}
                                                         {%if image.imagem.public_id%}
                                                             <a data-toggle="modal" data-target="#myModal{{magem.id}}">
                                                                 {% cloudinary image.imagem THUMBNAIL %}
                                                             </a>
                                                         {%else%}
                                                             <a data-toggle="modal" data-target="#myModal{{magem.id}}">
-                                                                <img src="/media/300x300.png" style="border-radius:50%;">
+                                                                <img src="/media/300x300.png" >
                                                             </a>
                                                         {%endif%}
                                                     {% endwith %}
-                                                </div></td>
-                                            {%endfor%}
-                                        </div></tr>
-                                        <tr><div class="row">
-                                            {%for titul in n_imoveis%}
-                                                <td><div class="col-sm-3">
-                                                    <h1><a>{{ titul.titulo }}</a></h1>
-                                                </div></td>
-                                            {%endfor%}
-                                        </div></tr>
-                                        <tr><div class="row">
-                                            {%for descrica in n_imoveis%}
-                                                <td><div class="col-sm-3">
+                                                </section>
+                                                <section class='titulosection'>
+                                                    <h1><a>{{ imovalues.titulo }}</a></h1>
+                                                </section>
+
+                                                <section class='descricaosection'>
                                                     <div class="descricao-paragrafo">
-                                                        <p class="clampMe">{{ descrica.descricao|linebreaksbr }}</p>
+                                                        <p class="clampMe">{{ imovalues.descricao|linebreaksbr }}</p>
                                                     </div>
-                                                </div></td>
-                                            {%endfor%}
-                                        </div></tr>
-                                        <tr><div class="row">
-                                            {%for modal in n_imoveis%}
-                                                <td><div class="col-sm-3">
-                                                    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal{{modal.id}}" style = "margin-bottom: 2em;">Vizualizar</button>
-                                                    <div class="modal fade" id="myModal{{modal.id}}" role="dialog" style="z-index: 99999;">
+                                                </section>
+
+                                                <section class='modalsection'>
+                                                    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal{{imovalues.id}}" style = "margin-bottom: 2em;">Vizualizar</button>
+                                                    <div class="modal fade" id="myModal{{imovalues.id}}" role="dialog" style="z-index: 99999;">
                                                         <div class="modal-dialog">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
-                                                                    {%if modal.imagem.all|count > 1 %}
-                                                                        <div id="myCarousel{{modal.id}}" class="carousel slide" data-ride="carousel">
+                                                                    {%if imovalues.imagem.all|count > 1 %}
+                                                                        <div id="myCarousel{{imovalues.id}}" class="carousel slide" data-ride="carousel">
                                                                             <ol class="carousel-indicators">
-                                                                                {% for i in modal.imagem.all.count|times %}
+                                                                                {% for i in imovalues.imagem.all.count|times %}
                                                                                     {% if i == 0 %}
-                                                                                        <li data-target="#myCarousel{{modal.id}}" data-slide-to={{i}} class="active"></li>
+                                                                                        <li data-target="#myCarousel{{imovalues.id}}" data-slide-to={{i}} class="active"></li>
                                                                                     {% else %}
-                                                                                        <li data-target="#myCarousel{{modal.id}}" data-slide-to={{i}}></li>
+                                                                                        <li data-target="#myCarousel{{imovalues.id}}" data-slide-to={{i}}></li>
                                                                                     {% endif %}
                                                                                 {% endfor %}
                                                                             </ol>
                                                                             <div class="carousel-inner">
-                                                                                {% for magem in modal.imagem.all %}
+                                                                                {% for magem in imovalues.imagem.all %}
                                                                                     {% if forloop.counter == 1 %}
                                                                                         <div class="item active">
                                                                                     {% else %}
@@ -186,19 +172,19 @@
                                                                                     </div>
                                                                                 {% endfor %}
                                                                             </div>
-                                                                            <a class="left carousel-control" href="#myCarousel{{modal.id}}" data-slide="prev">
+                                                                            <a class="left carousel-control" href="#myCarousel{{imovalues.id}}" data-slide="prev">
                                                                                 <span class="glyphicon glyphicon-chevron-left"></span>
                                                                                 <span class="sr-only">Previous</span>
                                                                             </a>
-                                                                            <a class="right carousel-control" href="#myCarousel{{modal.id}}" data-slide="next">
+                                                                            <a class="right carousel-control" href="#myCarousel{{imovalues.id}}" data-slide="next">
                                                                                 <span class="glyphicon glyphicon-chevron-right"></span>
                                                                                 <span class="sr-only">Next</span>
                                                                             </a>
                                                                         </div>
-                                                                    {%elif modal.imagem.all|count == 0%}
+                                                                    {%elif imovalues.imagem.all|count == 0%}
                                                                         <img src="/media/565x565.png">
-                                                                    {%elif modal.imagem.all|count == 1%}
-                                                                        {% with modal.imagem.all|first as image %}
+                                                                    {%elif imovalues.imagem.all|count == 1%}
+                                                                        {% with imovalues.imagem.all|first as image %}
                                                                             {%if image.imagem.public_id%}
                                                                                 {% cloudinary image.imagem MINISLIDE %}
                                                                             {%else%}
@@ -206,13 +192,34 @@
                                                                             {%endif%}
                                                                         {% endwith %}
                                                                     {%endif%}
-                                                                    <h4 class="modal-title">{{modal.titulo}}</h4>
+                                                                    <h4 class="modal-title">{{imovalues.titulo}}</h4>
                                                                 </div>
                                                                 <div class="modal-body">
-                                                                    <p>Descrição: {{ modal.descricao|linebreaksbr }}</p>
-                                                                    <p>Localização: {{ modal.localizacao|linebreaksbr }}</p>
-                                                                    <p>Tamanho: {{ modal.tamanho|linebreaksbr }}</p>
-                                                                    <p>Publicado em {{ modal.published_date }}</p>
+                                                                    <p>Descrição: {{ imovalues.descricao|linebreaksbr }}</p>
+                                                                    <p>Localização: {{ imovalues.localizacao|linebreaksbr }}</p>
+                                                                    <p>Tamanho: {{ imovalues.tamanho|linebreaksbr }}</p>
+                                                                    <p>Publicado em {{ imovalues.published_date }}</p>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" id="contato-button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModalcontato{{imovalues.id}}">Contato</button>
+                                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal fade" id="myModalcontato{{imovalues.id}}" role="dialog" style="z-index: 999999;">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <h1>Preenchas as informações a seguir</h1>
+                                                                    <div>
+                                                                        <form action="" method="POST" class="sendcontato">{% csrf_token %}
+                                                                            {{ imovalues.form.as_p }}
+                                                                            <input type="submit" class="btn btn-info btn-lg" value="Submit Feedback" />
+                                                                        </form>
+                                                                    </div>
                                                                 </div>
                                                                 <div class="modal-footer">
                                                                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -220,10 +227,10 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div></td>
-                                            {%endfor%}
-                                        </div></tr>
-                                    </div></tr>
+                                                </section>
+                                            </section>
+                                        {%endfor%}
+                                    </section>
                                 {%endfor%}
                                 <a class="prev page{{forloop.counter}}" href="#page{{forloop.counter|add:'-1'}}">prev</a>
                                 {%if forloop.counter != new_imoveis.count%}
@@ -236,61 +243,51 @@
                     {%endfor%}
                     <div class="page" id="page1">
                         {%for n_imoveis in new_imoveis.0%}
-                            <tr><div class="row">
-                                <tr><div class="row">
-                                    {%for magem in n_imoveis%}
-                                        <td><div class="col-sm-3">
-                                            {% with magem.imagem.all|first as image %}
+                            <section class='imovelmain'>
+                                {%for imovalues in n_imoveis%}
+                                    <section class='imovelsection'>
+                                        <section class='imagemsection'>
+                                            {% with imovalues.imagem.all|first as image %}
                                                 {%if image.imagem.public_id%}
                                                     <a data-toggle="modal" data-target="#myModal{{magem.id}}">
                                                         {% cloudinary image.imagem THUMBNAIL %}
                                                     </a>
                                                 {%else%}
                                                     <a data-toggle="modal" data-target="#myModal{{magem.id}}">
-                                                        <img src="/media/300x300.png" style="border-radius:50%;">
+                                                        <img src="/media/300x300.png" >
                                                     </a>
                                                 {%endif%}
                                             {% endwith %}
-                                        </div></td>
-                                    {%endfor%}
-                                </div></tr>
-                                <tr><div class="row">
-                                    {%for titul in n_imoveis%}
-                                        <td><div class="col-sm-3">
-                                            <h1><a>{{ titul.titulo }}</a></h1>
-                                        </div></td>
-                                    {%endfor%}
-                                </div></tr>
-                                <tr><div class="row">
-                                    {%for descrica in n_imoveis%}
-                                        <td><div class="col-sm-3">
+                                        </section>
+                                        <section class='titulosection'>
+                                            <h1><a>{{ imovalues.titulo }}</a></h1>
+                                        </section>
+
+                                        <section class='descricaosection'>
                                             <div class="descricao-paragrafo">
-                                                <p class="clampMe">{{ descrica.descricao }}</p>
+                                                <p class="clampMe">{{ imovalues.descricao|linebreaksbr }}</p>
                                             </div>
-                                        </div></td>
-                                    {%endfor%}
-                                </div></tr>
-                                <tr><div class="row">
-                                    {%for modal in n_imoveis%}
-                                        <td><div class="col-sm-3">
-                                            <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal{{modal.id}}" style = "margin-bottom: 2em;">Vizualizar</button>
-                                            <div class="modal fade" id="myModal{{modal.id}}" role="dialog" style="z-index: 99999;">
+                                        </section>
+
+                                        <section class='modalsection'>
+                                            <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal{{imovalues.id}}" style = "margin-bottom: 2em;">Vizualizar</button>
+                                            <div class="modal fade" id="myModal{{imovalues.id}}" role="dialog" style="z-index: 99999;">
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            {%if modal.imagem.all|count > 1 %}
-                                                                <div id="myCarousel{{modal.id}}" class="carousel slide" data-ride="carousel">
+                                                            {%if imovalues.imagem.all|count > 1 %}
+                                                                <div id="myCarousel{{imovalues.id}}" class="carousel slide" data-ride="carousel">
                                                                     <ol class="carousel-indicators">
-                                                                        {% for i in modal.imagem.all.count|times %}
+                                                                        {% for i in imovalues.imagem.all.count|times %}
                                                                             {% if i == 0 %}
-                                                                                <li data-target="#myCarousel{{modal.id}}" data-slide-to={{i}} class="active"></li>
+                                                                                <li data-target="#myCarousel{{imovalues.id}}" data-slide-to={{i}} class="active"></li>
                                                                             {% else %}
-                                                                                <li data-target="#myCarousel{{modal.id}}" data-slide-to={{i}}></li>
+                                                                                <li data-target="#myCarousel{{imovalues.id}}" data-slide-to={{i}}></li>
                                                                             {% endif %}
                                                                         {% endfor %}
                                                                     </ol>
                                                                     <div class="carousel-inner">
-                                                                        {% for magem in modal.imagem.all %}
+                                                                        {% for magem in imovalues.imagem.all %}
                                                                             {% if forloop.counter == 1 %}
                                                                                 <div class="item active">
                                                                             {% else %}
@@ -310,19 +307,19 @@
                                                                             </div>
                                                                         {% endfor %}
                                                                     </div>
-                                                                    <a class="left carousel-control" href="#myCarousel{{modal.id}}" data-slide="prev">
+                                                                    <a class="left carousel-control" href="#myCarousel{{imovalues.id}}" data-slide="prev">
                                                                         <span class="glyphicon glyphicon-chevron-left"></span>
                                                                         <span class="sr-only">Previous</span>
                                                                     </a>
-                                                                    <a class="right carousel-control" href="#myCarousel{{modal.id}}" data-slide="next">
+                                                                    <a class="right carousel-control" href="#myCarousel{{imovalues.id}}" data-slide="next">
                                                                         <span class="glyphicon glyphicon-chevron-right"></span>
                                                                         <span class="sr-only">Next</span>
                                                                     </a>
                                                                 </div>
-                                                            {%elif modal.imagem.all|count == 0%}
+                                                            {%elif imovalues.imagem.all|count == 0%}
                                                                 <img src="/media/565x565.png">
-                                                            {%elif modal.imagem.all|count == 1%}
-                                                                {% with modal.imagem.all|first as image %}
+                                                            {%elif imovalues.imagem.all|count == 1%}
+                                                                {% with imovalues.imagem.all|first as image %}
                                                                     {%if image.imagem.public_id%}
                                                                         {% cloudinary image.imagem MINISLIDE %}
                                                                     {%else%}
@@ -330,24 +327,45 @@
                                                                     {%endif%}
                                                                 {% endwith %}
                                                             {%endif%}
-                                                            <h4 class="modal-title">{{modal.titulo}}</h4>
+                                                            <h4 class="modal-title">{{imovalues.titulo}}</h4>
                                                         </div>
                                                         <div class="modal-body">
-                                                            <p>Descrição: {{ modal.descricao|linebreaksbr }}</p>
-                                                            <p>Localização: {{ modal.localizacao|linebreaksbr }}</p>
-                                                            <p>Tamanho: {{ modal.tamanho|linebreaksbr }}</p>
-                                                            <p>Publicado em {{ modal.published_date }}</p>
+                                                            <p>Descrição: {{ imovalues.descricao|linebreaksbr }}</p>
+                                                            <p>Localização: {{ imovalues.localizacao|linebreaksbr }}</p>
+                                                            <p>Tamanho: {{ imovalues.tamanho|linebreaksbr }}</p>
+                                                            <p>Publicado em {{ imovalues.published_date }}</p>
                                                         </div>
                                                         <div class="modal-footer">
+                                                            <button type="button" id="contato-button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModalcontato{{imovalues.id}}">Contato</button>
                                                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div></td>
-                                    {%endfor%}
-                                </div></tr>
-                            </div></tr>
+                                            <div class="modal fade" id="myModalcontato{{imovalues.id}}" role="dialog" style="z-index: 999999;" data-target="#myModal{{imovalues.id}}">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <h1>Preenchas as informações a seguir</h1>
+                                                            <div>
+                                                                <form action="" method="POST" class="sendcontato">{% csrf_token %}
+                                                                    {{ imovalues.form.as_p }}
+                                                                    <input type="submit" class="btn btn-info btn-lg" value="Submit Feedback" />
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-default" data-target="#myModal{{imovalues.id}}" data-dismiss="modal">Close</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </section>
+                                    </section>
+                                {%endfor%}
+                            </section>
                         {%endfor%}
                         <a class="prev page1 disabled" href="#page1">prev</a>
                         <a class="next page1" href="#page2">next</a>
@@ -359,68 +377,56 @@
                     {% endfor %}
                 </div>
             </div>
-            <br></br>
-            {%if new_depoimento|count > 0%}
-                <h1>Depoimentos</h1>
-            {%else%}
-                <h1>Sem Depoimentos</h1>
-            {%endif%}
-            <br></br>
             <div class="csspagsination">
+                <br></br>
+                {%if new_depoimento|count > 0%}
+                    <h1>Depoimentos</h1>
+                {%else%}
+                    <h1>Sem Depoimentos</h1>
+                {%endif%}
+                <br></br>
                 <div class="pagses">
                     {%for n_depoimento in new_depoimento%}
                         {%if forloop.counter != 1%}
                             <div class="pagse" id="pagse{{forloop.counter}}">
-                                <tr><div class="row">
-                                    <tr><div class="row">
-                                        {%for image in n_depoimento%}
-                                            <td><div class="col-sm-3">
-                                                {%if image.imagem.public_id%}
-                                                    <a data-toggle="modal" data-target="#myModal{{image.id}}a{{forloop.counter}}">
-                                                        {% cloudinary image.imagem THUMBNAIL %}
+                                <section class='depomain'>
+                                    {%for depovalues in n_depoimento%}
+                                        <section class='deposection'>
+                                            <section class='depoimagemsection'>
+                                                {%if depovalues.imagem.public_id%}
+                                                    <a data-toggle="modal" data-target="#myModal{{depovalues.id}}a{{forloop.counter}}">
+                                                        {% cloudinary depovalues.imagem DEPOTHUMBNAIL %}
                                                     </a>
                                                 {%else%}
-                                                    <a data-toggle="modal" data-target="#myModal{{image.id}}a{{forloop.counter}}">
+                                                    <a data-toggle="modal" data-target="#myModal{{depovalues.id}}a{{forloop.counter}}">
                                                         <img src="/media/300x300.png" style="border-radius:50%;">
                                                     </a>
                                                 {%endif%}
-                                            </div></td>
-                                        {%endfor%}
-                                    </div></tr>
-                                    <tr><div class="row">
-                                        {%for titul in n_depoimento%}
-                                            <td><div class="col-sm-3">
-                                                <h1><a>{{ titul.titulo }}</a></h1>
-                                            </div></td>
-                                        {%endfor%}
-                                    </div></tr>
-                                    <tr><div class="row">
-                                        {%for descrica in n_depoimento%}
-                                            <td><div class="col-sm-3">
+                                            </section>
+                                            <section class='depotitulosection'>
+                                                <h1><a>{{ depovalues.titulo }}</a></h1>
+                                            </section>
+                                            <section class='depodescricaosection'>
                                                 <div class="descricao-paragrafo">
-                                                    <p class="clampMe">{{ descrica.descricao|linebreaksbr }}</p>
+                                                    <p class="clampMe">{{ depovalues.descricao|linebreaksbr }}</p>
                                                 </div>
-                                            </div></td>
-                                        {%endfor%}
-                                    </div></tr>
-                                    <tr><div class="row">
-                                        {%for modal in n_depoimento%}
-                                            <td><div class="col-sm-3">
-                                                <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal{{modal.id}}a{{forloop.counter}}" style = "margin-bottom: 2em;">Vizualizar</button>
-                                                <div class="modal fade" id="myModal{{modal.id}}a{{forloop.counter}}" role="dialog" style="z-index: 99999;">
+                                            </section>
+                                            <section class='depomodalsection'>
+                                                <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal{{depovalues.id}}a{{forloop.counter}}" style = "margin-bottom: 2em;">Vizualizar</button>
+                                                <div class="modal fade" id="myModal{{depovalues.id}}a{{forloop.counter}}" role="dialog" style="z-index: 99999;">
                                                     <div class="modal-dialog">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                                {%if modal.imagem.public_id%}
-                                                                    {% cloudinary modal.imagem MINISLIDE %}
+                                                                {%if depovalues.imagem.public_id%}
+                                                                    {% cloudinary depovalues.imagem MINISLIDE %}
                                                                 {%else%}
                                                                     <img src="/media/565x565.png">
                                                                 {%endif%}
-                                                                <h4 class="modal-title">{{modal.titulo}}</h4>
+                                                                <h4 class="modal-title">{{depovalues.titulo}}</h4>
                                                             </div>
                                                             <div class="modal-body">
-                                                                <p>Descrição: {{ modal.descricao|linebreaksbr }}</p>
-                                                                <p>Publicado em {{ modal.published_date }}</p>
+                                                                <p>Descrição: {{ depovalues.descricao|linebreaksbr }}</p>
+                                                                <p>Publicado em {{ depovalues.published_date }}</p>
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -428,10 +434,10 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div></td>
-                                        {%endfor%}
-                                    </div></tr>
-                                </div></tr>
+                                            </section>
+                                        </section>
+                                    {%endfor%}
+                                </section>
                                 <a class="prev pagse{{forloop.counter}}" href="#pagse{{forloop.counter|add:'-1'}}">prev</a>
                                 {%if forloop.counter != new_depoimento.count%}
                                     <a class="next pagse{{forloop.counter}}" href="#pagse{{forloop.counter|add:1}}">next</a>
@@ -442,56 +448,44 @@
                         {%endif%}
                     {%endfor%}
                     <div class="pagse" id="pagse1">
-                        <tr><div class="row">
-                            <tr><div class="row">
-                                {%for image in new_depoimento.0%}
-                                    <td><div class="col-sm-3">
-                                        {%if image.imagem.public_id%}
-                                            <a data-toggle="modal" data-target="#myModal{{image.id}}a{{forloop.counter}}">
-                                                {% cloudinary image.imagem THUMBNAIL %}
+                        <section class='depomain'>
+                            {%for depovalues in new_depoimento.0%}
+                                <section class='deposection'>
+                                    <section class='depoimagemsection'>
+                                        {%if depovalues.imagem.public_id%}
+                                            <a data-toggle="modal" data-target="#myModal{{depovalues.id}}a{{forloop.counter}}">
+                                                {% cloudinary depovalues.imagem DEPOTHUMBNAIL %}
                                             </a>
                                         {%else%}
-                                            <a data-toggle="modal" data-target="#myModal{{image.id}}a{{forloop.counter}}">
+                                            <a data-toggle="modal" data-target="#myModal{{depovalues.id}}a{{forloop.counter}}">
                                                 <img src="/media/300x300.png" style="border-radius:50%;">
                                             </a>
                                         {%endif%}
-                                    </div></td>
-                                {%endfor%}
-                            </div></tr>
-                            <tr><div class="row">
-                                {%for titul in new_depoimento.0%}
-                                    <td><div class="col-sm-3">
-                                        <h1><a>{{ titul.titulo }}</a></h1>
-                                    </div></td>
-                                {%endfor%}
-                            </div></tr>
-                            <tr><div class="row">
-                                {%for descrica in new_depoimento.0%}
-                                    <td><div class="col-sm-3">
+                                    </section>
+                                    <section class='depotitulosection'>
+                                        <h1><a>{{ depovalues.titulo }}</a></h1>
+                                    </section>
+                                    <section class='depodescricaosection'>
                                         <div class="descricao-paragrafo">
-                                            <p class="clampMe">{{ descrica.descricao|linebreaksbr }}</p>
+                                            <p class="clampMe">{{ depovalues.descricao|linebreaksbr }}</p>
                                         </div>
-                                    </div></td>
-                                {%endfor%}
-                            </div></tr>
-                            <tr><div class="row">
-                                {%for modal in new_depoimento.0%}
-                                    <td><div class="col-sm-3">
-                                        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal{{modal.id}}a{{forloop.counter}}" style = "margin-bottom: 2em;">Vizualizar</button>
-                                        <div class="modal fade" id="myModal{{modal.id}}a{{forloop.counter}}" role="dialog" style="z-index: 99999;">
+                                    </section>
+                                    <section class='depomodalsection'>
+                                        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal{{depovalues.id}}a{{forloop.counter}}" style = "margin-bottom: 2em;">Vizualizar</button>
+                                        <div class="modal fade" id="myModal{{depovalues.id}}a{{forloop.counter}}" role="dialog" style="z-index: 99999;">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        {%if modal.imagem.public_id%}
-                                                            {% cloudinary modal.imagem MINISLIDE %}
+                                                        {%if depovalues.imagem.public_id%}
+                                                            {% cloudinary depovalues.imagem MINISLIDE %}
                                                         {%else%}
                                                             <img src="/media/565x565.png">
                                                         {%endif%}
-                                                        <h4 class="modal-title">{{modal.titulo}}</h4>
+                                                        <h4 class="modal-title">{{depovalues.titulo}}</h4>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <p>Descrição: {{ modal.descricao|linebreaksbr }}</p>
-                                                        <p>Publicado em {{ modal.published_date }}</p>
+                                                        <p>Descrição: {{ depovalues.descricao|linebreaksbr }}</p>
+                                                        <p>Publicado em {{ depovalues.published_date }}</p>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -499,10 +493,10 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div></td>
-                                {%endfor%}
-                            </div></tr>
-                        </div></tr>
+                                    </section>
+                                </section>
+                            {%endfor%}
+                        </section>
                         <a class="prev pagse1 disabled" href="#pagse1">prev</a>
                         <a class="next pagse1" href="#pagse2">next</a>
                     </div>
@@ -518,6 +512,8 @@
         <br>
         <br>
         <footer class="container-fluid text-center">
+            <script src="{% static 'modals.js' %}"></script>
+            <script src="{% static 'contato.js' %}"></script>
             <script src="{% static 'prevnext.js' %}"></script>
             <script src="{% static 'prevnext2.js' %}"></script>
             <a href="#myPage" title="To Top">

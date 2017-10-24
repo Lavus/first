@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
-from django.db.models import Model, ForeignKey, CharField, DateTimeField, TextField
+from django.db.models import Model, ForeignKey, CharField, DateTimeField, TextField, EmailField
 from django.db.models.signals import post_delete, pre_save
 from cloudinary.models import CloudinaryField
-from django.utils.timezone import now
 from django.dispatch import receiver
 from cloudinary import uploader
 
@@ -12,11 +11,7 @@ class Imovel(Model):
     descricao = TextField()
     localizacao = TextField()
     tamanho = CharField(max_length=200)
-    published_date = DateTimeField()
-
-    def publish(self):
-        self.published_date = now()
-        self.save()
+    published_date = DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.titulo
@@ -24,7 +19,7 @@ class Imovel(Model):
 class Imagem(Model):
     album = ForeignKey('Imovel', related_name='imagens')
     titulo = CharField(max_length=100)
-    published_date = DateTimeField()
+    published_date = DateTimeField(auto_now=True)
     imagem = CloudinaryField('imagem')
 
     def __unicode__(self):
@@ -33,10 +28,6 @@ class Imagem(Model):
         except AttributeError:
             public_id = ''
         return "Imagem <%s:%s>" % (self.titulo, public_id)
-
-    def publish(self):
-        self.published_date = now()
-        self.save()
 
     def __str__(self):
         return self.titulo
@@ -62,11 +53,22 @@ def auto_delete_imagem_of_Imagem_on_change(sender, instance, **kwargs):
     if new == False:
         uploader.destroy(old_file,invalidate=True)
 
+class Contato(Model):
+    imovel = ForeignKey('Imovel', related_name='contatos') 
+    nome = CharField(max_length=100)
+    telefone = CharField(max_length=12)
+    email = EmailField(max_length=100)
+    texto = TextField()
+    published_date = DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.nome
+
 class Destaque(Model):
     autor = ForeignKey('auth.User')
     titulo = CharField(max_length=200)
     descricao = CharField(max_length=300)
-    published_date = DateTimeField()
+    published_date = DateTimeField(auto_now=True)
     imagem = CloudinaryField('imagem')
 
     def __unicode__(self):
@@ -75,10 +77,6 @@ class Destaque(Model):
         except AttributeError:
             public_id = ''
         return "Imagem <%s:%s>" % (self.titulo, public_id)
-
-    def publish(self):
-        self.published_date = now()
-        self.save()
 
     def __str__(self):
         return self.titulo
@@ -108,7 +106,7 @@ class Depoimento(Model):
     autor = ForeignKey('auth.user')
     titulo = CharField(max_length=200)
     descricao = TextField()
-    published_date = DateTimeField()
+    published_date = DateTimeField(auto_now=True)
     imagem = CloudinaryField('imagem')
 
     def __unicode__(self):
@@ -117,10 +115,6 @@ class Depoimento(Model):
         except AttributeError:
             public_id = ''
         return "Imagem <%s:%s>" % (self.titulo, public_id)
-
-    def publish(self):
-        self.published_date = now()
-        self.save()
 
     def __str__(self):
         return self.titulo

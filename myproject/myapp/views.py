@@ -1,12 +1,20 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render_to_response, render, redirect
 from django.template import RequestContext
-from django.http import HttpResponseRedirect
+from django.http import JsonResponse
 from django.core.urlresolvers import reverse
 from django.utils.timezone import now
 from myproject.myapp.models import Imovel, Destaque, Depoimento
+from myproject.myapp.forms import ContatoForm
 
 def list(request):
+    if request.method == "POST":
+        form = ContatoForm(request.POST)
+        message = 'Algo errado, por favor verifique se todos os campos estão preenchidos corretamente'
+        if(form.is_valid()):
+            message = 'Contato enviado com sucesso'
+            form.save()
+        return JsonResponse({'message':message})
     imoveis = Imovel.objects.all().order_by('published_date')
     destaques = Destaque.objects.all().order_by('published_date')
     depoimento = Depoimento.objects.all().order_by('published_date')
@@ -21,17 +29,17 @@ def list(request):
         x = 0
         for count, imovel in enumerate(imoveis):
             if count+1 in pagination8:
-                new_imoveis[i][x].append({'imagem':imovel.imagens, 'titulo':imovel.titulo, 'descricao':imovel.descricao, 'localizacao':imovel.localizacao, 'tamanho':imovel.tamanho, 'published_date':imovel.published_date, 'id':imovel.id})
+                new_imoveis[i][x].append({'imagem':imovel.imagens, 'titulo':imovel.titulo, 'descricao':imovel.descricao, 'localizacao':imovel.localizacao, 'tamanho':imovel.tamanho, 'published_date':imovel.published_date, 'id':imovel.id, 'form':ContatoForm(initial={'imovel':imovel.id})})
                 if count+1 != len(imoveis):
                     new_imoveis.append([[]])
                 i += 1
                 x = 0
             elif count+1 in pagination4:
-                new_imoveis[i][x].append({'imagem':imovel.imagens, 'titulo':imovel.titulo, 'descricao':imovel.descricao, 'localizacao':imovel.localizacao, 'tamanho':imovel.tamanho, 'published_date':imovel.published_date, 'id':imovel.id})
+                new_imoveis[i][x].append({'imagem':imovel.imagens, 'titulo':imovel.titulo, 'descricao':imovel.descricao, 'localizacao':imovel.localizacao, 'tamanho':imovel.tamanho, 'published_date':imovel.published_date, 'id':imovel.id, 'form':ContatoForm(initial={'imovel':imovel.id})})
                 new_imoveis[i].append([])
                 x = 1
             else:
-                new_imoveis[i][x].append({'imagem':imovel.imagens, 'titulo':imovel.titulo, 'descricao':imovel.descricao, 'localizacao':imovel.localizacao, 'tamanho':imovel.tamanho, 'published_date':imovel.published_date, 'id':imovel.id})   
+                new_imoveis[i][x].append({'imagem':imovel.imagens, 'titulo':imovel.titulo, 'descricao':imovel.descricao, 'localizacao':imovel.localizacao, 'tamanho':imovel.tamanho, 'published_date':imovel.published_date, 'id':imovel.id, 'form':ContatoForm(initial={'imovel':imovel.id})})   
     if len(depoimento) > 0:
         new_depoimento = [[]]
         i = 0
@@ -53,8 +61,3 @@ def list(request):
 
 def undefined(request):
     return redirect(list)
-
-#~ definir se slide com apenas uma imagem, colocar bruto como no depoimento
-#~ colocar se não existe imagem, carregar sem imagem, o padrão que ele passou
-#~ descricao colocar tres pontinhos caso passe de duzentos caracteres
-

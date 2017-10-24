@@ -1,16 +1,23 @@
 # -*- coding: utf-8 -*-
-from django.forms import ModelForm
-from myproject.myapp.models import Imagem, Imovel, Destaque, Depoimento
+from django.forms import ModelForm, HiddenInput
+from myproject.myapp.models import Imagem, Imovel, Destaque, Depoimento, Contato
+
+
+class ImovelForm(ModelForm):
+    class Meta:
+        model = Imovel
+        fields = '__all__'
 
 class ImagemForm(ModelForm):
     class Meta:
         model = Imagem
         fields = '__all__'
 
-class ImovelForm(ModelForm):
+class ContatoForm(ModelForm):
     class Meta:
-        model = Imovel
+        model = Contato
         fields = '__all__'
+        widgets = {'imovel': HiddenInput()}
 
 class DestaqueForm(ModelForm):
     class Meta:
