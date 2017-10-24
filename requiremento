@@ -1,0 +1,2 @@
+python3.5 
+django==1.8.0 cloudinary Pillow django-multiupload django-cleanup django-photo-albums django-autoconfig whitenoise
